@@ -1,0 +1,12 @@
+#draggable {
+    font-size: 5vh;
+    position: absolute;
+    user-select: none;
+}
+
+#drop-zone { 
+    width: 25vh; 
+    height: 25vh;
+    border: 5px solid rgb(100, 100, 100);
+    display: inline-block 
+}
