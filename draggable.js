@@ -1,55 +1,58 @@
-var drop = document.getElementById("drop-zone")
-var drag = document.getElementById("draggable")
+var drop = document.getElementById("drop-zone");
+var drag = document.getElementById("draggable");
 
 dragElement(drag);
 
-function dragElement(elmnt) {
+function dragElement(ele) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  elmnt.onmousedown = dragMouseDown;
+  ele.onmousedown = mouseDown
 
-  function dragMouseDown(e) {
+  function mouseDown(e) {
     e = e || window.event;
     e.preventDefault();
-    // get the mouse cursor position at startup:
+
+    // Get mouse position on startup
     pos3 = e.clientX;
     pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
+
+    document.onmouseup = closeElement;
+    document.onmousemove = dragElement;
   }
 
-  function elementDrag(e) {
+  function dragElement(e) {
     e = e || window.event;
     e.preventDefault();
-    // calculate the new cursor position:
+
+    // Calculate new position
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
     pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+    // Set new pos
+    ele.style.left = (ele.offsetLeft - pos1) + "px";
+    ele.style.top = (ele.offsetTop - pos2) + "px";
+    touches(drop, drag, true);
   }
 
-  function closeDragElement() {
-    // stop moving when mouse button is released:
+  function closeElement() {
+    // Resets the mouse functions when mouse buton is released
     document.onmouseup = null;
     document.onmousemove = null;
-    touches(drop, drag)
+    touches(drop, drag, false);
   }
 }
 
-function touches(el1, el2) {
-  const rect1 = el1.getBoundingClientRect();
-  const rect2 = el2.getBoundingClientRect();
+function touches(ele1, ele2, moving) {
+  a = ele1.getBoundingClientRect();
+  b = ele2.getBoundingClientRect();
 
-  if(rect1.x < rect2.x + rect2.width &&
-    rect1.x + rect1.width > rect2.x &&
-    rect1.y < rect2.y + rect2.height &&
-    rect1.y + rect1.height > rect2.y){
-      console.log("Colliding")
-    }
-    else {
-      console.log("Not colliding")
+  if (((a.y + a.height) < (b.y)) ||
+  (a.y > (b.y + b.height)) ||
+  ((a.x + a.width) < b.x) ||
+  (a.x > (b.x + b.width))) {
+     console.log("not touching") 
+    } else {
+      console.log("touching")
     }
 }
